@@ -27,6 +27,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-angular-templates'
   grunt.loadNpmTasks 'grunt-bower-task'
   grunt.loadNpmTasks 'grunt-contrib-sass'
+  grunt.loadNpmTasks 'grunt-autoprefixer'
 
   # Project configuration.
   grunt.initConfig
@@ -42,7 +43,7 @@ module.exports = (grunt) ->
 
       sass:
         files: ['src/sass/*', 'src/sass/**/*.scss']
-        tasks: ['node-sass', 'reload'],
+        tasks: ['node-sass', 'autoprefixer', 'reload'],
         options:
           nospawn: true
 
@@ -93,6 +94,11 @@ module.exports = (grunt) ->
         {expand: true, cwd: './assets/', src: ['**'], dest: './www/'}
       ]
 
+    autoprefixer:
+      dist:
+        files:
+          'www/styles.css':'www/styles.css'
+
   grunt.registerTask 'node-sass', ->
     css = sass.renderSync
       file: 'src/sass/styles.scss'
@@ -109,6 +115,6 @@ module.exports = (grunt) ->
     exec 'osascript -e \'tell application \"Google Chrome Canary\" to tell the active tab of its first window to reload\''
     growl 'Reloaded', title: 'Chrome', name: 'Grunt'
 
-  grunt.registerTask 'default', ['clean', 'bower', 'index', 'copy', 'concat', 'ngtemplates', 'node-sass', 'browserify', 'reload', 'watch']
+  grunt.registerTask 'default', ['clean', 'bower', 'index', 'copy', 'concat', 'ngtemplates', 'node-sass', 'autoprefixer', 'browserify', 'reload', 'watch']
 
 
